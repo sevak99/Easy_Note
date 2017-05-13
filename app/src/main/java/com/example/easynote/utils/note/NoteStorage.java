@@ -12,9 +12,11 @@ public abstract class NoteStorage {
 
     public abstract void createNote(Note note, NoteListener listener);
 
-    public abstract void findNoteByID(long id, NoteListener listener);
+    public abstract int getNotePosition(long id);
 
     public abstract void updateNote(Note note, NoteListener noteListener);
+
+    public abstract void deleteNote(Note note);
 
     public abstract void findAllNotes(NotesFoundListener listener);
 

@@ -18,22 +18,13 @@ import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteViewHolder> {
     private List<Note> notes;
-    private NoteViewHolder.NoteItemClickListener listener;
+    private NoteViewHolder.NoteItemClickListener itemClickListener;
+    private NoteViewHolder.NoteItemDeleteListener itemDeleteListener;
 
-    public void addNote(Note note) {
-        notes.add(note);
-        notifyDataSetChanged();
-    }
-
-    public void updateNote(Note note) {
-        for (int i = 0; i < notes.size(); i++) {
-            if(notes.get(i).getId() == note.getId()) {
-                notes.remove(i);
-                notes.add(i, note);
-                notifyDataSetChanged();
-                break;
-            }
-        }
+    public NoteAdapter(final NoteViewHolder.NoteItemClickListener itemClickListener, NoteViewHolder.NoteItemDeleteListener itemDeleteListener) {
+        notes = new ArrayList<>();
+        this.itemClickListener = itemClickListener;
+        this.itemDeleteListener = itemDeleteListener;
     }
 
     public void setNotes(List<Note> notes) {
@@ -41,16 +32,40 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteViewHolder> {
         notifyDataSetChanged();
     }
 
-    public NoteAdapter(final NoteViewHolder.NoteItemClickListener listener) {
-        notes = new ArrayList<>();
-        this.listener = listener;
+    public void addNote(Note note) {
+        notes.add(note);
+        notifyDataSetChanged();
+    }
+
+//    Update Note
+    public void updateNote(Note note) {
+        int i = getNotePosition(note.getId());
+        notes.remove(i);
+        notes.add(i, note);
+        notifyDataSetChanged();
+    }
+//    Delete Note
+    public void deleteNote(Note note) {
+        int i = getNotePosition(note.getId());
+        notes.remove(i);
+        notifyDataSetChanged();
+    }
+
+//    get Note Position
+    private int getNotePosition(long id) {
+        for (int i = 0; i < notes.size(); i++) {
+            if(notes.get(i).getId() == id) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(App.getInstance());
         View view = inflater.inflate(R.layout.item_note, parent, false);
-        return new NoteViewHolder(view, listener);
+        return new NoteViewHolder(view, itemClickListener, itemDeleteListener);
     }
 
     @Override

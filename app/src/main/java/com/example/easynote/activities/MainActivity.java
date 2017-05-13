@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton floatingActionButton;
     private NoteAdapter noteAdapter;
     private NoteStorage noteStorage;
-    private NoteViewHolder.NoteItemClickListener noteItemClickListener;
+    private NoteViewHolder.NoteItemClickListener itemClickListener;
+    private NoteViewHolder.NoteItemDeleteListener itemDeleteListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +40,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView = (RecyclerView) findViewById(R.id.main_RecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        noteItemClickListener = new NoteViewHolder.NoteItemClickListener() {
-            @Override
-            public void onNoteItemClick(Note note) {
-                Intent intent = new Intent(App.getInstance(), CreateActivity.class);
-                intent.putExtra(KEY_TITLE, note);
-                startActivityForResult(intent, REQUEST_CODE_FOR_UPDATE);
-            }
-        };
-
-        noteAdapter = new NoteAdapter(noteItemClickListener);
+        initializeNoteItemClickListener();
+        initializeNoteItemDeleteListener();
+        noteAdapter = new NoteAdapter(itemClickListener, itemDeleteListener);
         recyclerView.setAdapter(noteAdapter);
         noteStorage = new FileNoteStorage();
         noteStorage.findAllNotes(new NoteStorage.NotesFoundListener() {
@@ -57,9 +51,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 noteAdapter.setNotes(notes);
             }
         });
+    }
 
+    private void initializeNoteItemClickListener() {
+        itemClickListener = new NoteViewHolder.NoteItemClickListener() {
+            @Override
+            public void onNoteItemClick(Note note) {
+                Intent intent = new Intent(App.getInstance(), CreateActivity.class);
+                intent.putExtra(KEY_TITLE, note);
+                startActivityForResult(intent, REQUEST_CODE_FOR_UPDATE);
+            }
+        };
+    }
 
-
+    private void initializeNoteItemDeleteListener() {
+        itemDeleteListener = new NoteViewHolder.NoteItemDeleteListener() {
+            @Override
+            public void onNoteItemDelete(Note note) {
+                noteStorage.deleteNote(note);
+                noteAdapter.deleteNote(note);
+            }
+        };
     }
 
     @Override
@@ -81,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case REQUEST_CODE_FOR_UPDATE:
                     noteAdapter.updateNote((Note) data.getSerializableExtra(CreateActivity.KEY_TITLE));
-                    noteAdapter.notifyDataSetChanged();
             }
         }
     }

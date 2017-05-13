@@ -44,32 +44,34 @@ public class FileNoteStorage extends NoteStorage {
         notifyNoteFound(note, listener);
     }
 
-//    Find Note By ID
+// get Note Position
     @Override
-    public void findNoteByID(long id, NoteListener listener) {
-        for (int i = 0; i < notesWrapper.getNotes().size(); i++) {
+    public int getNotePosition(long id) {
+        for(int i = 0; i < notesWrapper.getNotes().size(); i++) {
             if(notesWrapper.getNotes().get(i).getId() == id) {
-                notifyNoteFound(notesWrapper.getNotes().get(i), listener);
-                break;
+                return i;
             }
         }
-
-        notifyNoteFound(null, listener);
+        return -1;
     }
 
-//    Update Note
+    //    Update Note
     @Override
-    public void updateNote(final Note newNote, NoteListener noteListener) {
-        newNote.setCreateDate(new Date());
-        findNoteByID(newNote.getId(), new NoteListener() {
-            @Override
-            public void onNote(Note note) {
-                note = newNote;
-                StorageHelper.serialize(getFileName(), notesWrapper);
-            }
-        });
+    public void updateNote(final Note note, NoteListener noteListener) {
+        note.setCreateDate(new Date());
+        int i = getNotePosition(note.getId());
+        notesWrapper.getNotes().remove(i);
+        notesWrapper.getNotes().add(i, note);
+        StorageHelper.serialize(getFileName(), notesWrapper);
+        notifyNoteFound(note, noteListener);
+    }
 
-        notifyNoteFound(newNote, noteListener);
+//    Delete Note
+    @Override
+    public void deleteNote(Note note) {
+        int i = getNotePosition(note.getId());
+        notesWrapper.getNotes().remove(i);
+        StorageHelper.serialize(getFileName(), notesWrapper);
     }
 
     @Override
