@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    tools:context="com.example.easynote.fragments.NoteDetailsFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/noteDetailFragment_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/colorBlack"
+        android:textSize="25dp"
+        android:text="Title"/>
+
+    <TextView
+        android:id="@+id/noteDetailFragment_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/noteDetailFragment_title"
+        android:layout_marginTop="20dp"
+        android:textSize="16dp"
+        android:textColor="@color/colorBlack"
+        android:text="description"/>
+
+    <TextView
+        android:id="@+id/noteDetailFragment_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/noteDetailFragment_description"
+        android:background="#cccccc"/>
+
+    <TextView
+        android:id="@+id/noteDetailFragment_colorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/noteDetailFragment_description"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorBlack"
+        android:textSize="16dp"
+        android:text="Note Color"/>
+
+    <TextView
+        android:id="@+id/noteDetailFragment_color"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_toRightOf="@+id/noteDetailFragment_colorText"
+        android:layout_alignTop="@+id/noteDetailFragment_colorText"
+        android:layout_marginLeft="20dp"
+        android:background="@color/cardViewColor"/>
+
+    <TextView
+        android:id="@+id/noteDetailFragment_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/noteDetailFragment_colorText"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/colorBlack"
+        android:text="16.05.2017"/>
+
+    <ImageView
+        android:id="@+id/noteDetailFragment_isImportant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/btn_star_big_on"/>
+
+    <ImageView
+        android:id="@+id/noteDetailFragment_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:src="@android:drawable/ic_menu_edit"/>
+
+</RelativeLayout>

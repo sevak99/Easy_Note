@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.easynote.App;
 import com.example.easynote.R;
+import com.example.easynote.fragments.NoteDetailsFragment;
 import com.example.easynote.pojos.Note;
 import com.example.easynote.utils.note.FileNoteStorage;
 import com.example.easynote.utils.note.NoteStorage;
@@ -57,7 +58,7 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
 
 //    Set Note
     private void setNote(){
-        Note note = (Note) getIntent().getSerializableExtra(MainActivity.KEY_TITLE);
+        Note note = (Note) getIntent().getSerializableExtra(NoteDetailsFragment.KEY_TITLE);
         if(note != null) {
             title.setText(note.getTitle());
             description.setText(note.getDescription());
