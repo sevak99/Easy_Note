@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.easynote.activities.CreateActivity"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:background="@color/cardViewColor">
 
     <TextView
@@ -63,14 +63,33 @@
         android:textSize="16sp"
         android:textColor="@color/colorBlack"/>
 
+    <TextView
+        android:id="@+id/createNote_alarmDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/createNote_ColorPicker"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/createNote_setAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/createNote_ColorPicker"
+        android:layout_toRightOf="@+id/createNote_alarmDate"
+        android:layout_marginLeft="10dp"
+        android:text="set alarm"
+        />
+
 
     <Button
         android:id="@+id/createNote_save_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/createNote_ColorPicker"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
         android:text="Save"/>
 
 </RelativeLayout>

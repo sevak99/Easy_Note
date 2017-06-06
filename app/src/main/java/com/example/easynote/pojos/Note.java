@@ -1,7 +1,17 @@
 package com.example.easynote.pojos;
 
+import android.icu.text.TimeZoneFormat;
+import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
+
 import java.io.Serializable;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by SEVAK on 09.05.2017.
@@ -13,9 +23,21 @@ public class Note implements Serializable {
     private long id;
     private String title;
     private String description;
-    private Date createDate;
+    private Calendar createDate;
     private int color;
     private boolean important;
+    private Calendar alarmDate;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Note() {
+        createDate = Calendar.getInstance();
+        alarmDate = Calendar.getInstance();
+
+        TimeZone timeZone = createDate.getTimeZone();
+        timeZone.setRawOffset(4);
+        createDate.setTimeZone(timeZone);
+        alarmDate.setTimeZone(timeZone);
+    }
 
     public void setId(long id) {
         this.id = id;
@@ -27,10 +49,6 @@ public class Note implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
     }
 
     public void setColor(int color) {
@@ -53,8 +71,18 @@ public class Note implements Serializable {
         return description;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String getCreateDate() {
+        SimpleDateFormat dateFormat;
+        if(Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > createDate.get(Calendar.DAY_OF_MONTH)) {
+//            Log.d("testt", "Note -- today -- " + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + " --- " + createDate.get(Calendar.DAY_OF_MONTH));
+            dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        }
+        else
+            dateFormat = new SimpleDateFormat("HH:mm");
+        String string = dateFormat.format(createDate.getTime());
+//        Log.d("testt", "Note -- " + string);
+        return string;
     }
 
     public int getColor() {
@@ -63,6 +91,21 @@ public class Note implements Serializable {
 
     public boolean isImportant() {
         return important;
+    }
+
+    public Calendar getAlarmDate() {
+        return alarmDate;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String getAlarmDateInString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        return dateFormat.format(alarmDate.getTime());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void changeUpdateDate() {
+        createDate = Calendar.getInstance();
     }
 
     @Override

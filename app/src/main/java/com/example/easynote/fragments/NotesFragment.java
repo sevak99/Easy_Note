@@ -36,6 +36,7 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
     private NoteStorage noteStorage;
     private NoteViewHolder.NoteItemClickListener itemClickListener;
     private NoteViewHolder.NoteItemDeleteListener itemDeleteListener;
+    private NoteViewHolder.NoteItemLongClickListener itemLongClickListener;
 
 
     public NotesFragment() {
@@ -64,7 +65,7 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
         floatingActionButton.setOnClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(App.getInstance(), LinearLayoutManager.VERTICAL, false));
         initializeNoteItemDeleteListener();
-        noteAdapter = new NoteAdapter(itemClickListener, itemDeleteListener);
+        noteAdapter = new NoteAdapter(itemClickListener, itemDeleteListener, itemLongClickListener);
         recyclerView.setAdapter(noteAdapter);
         noteStorage = new FileNoteStorage();
         noteStorage.findAllNotes(new NoteStorage.NotesFoundListener() {
@@ -85,8 +86,16 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
         };
     }
 
+    public NoteViewHolder.NoteItemDeleteListener getItemDeleteListener() {
+        return itemDeleteListener;
+    }
+
     public void setItemClickListener(NoteViewHolder.NoteItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public void setItemLongClickListener(NoteViewHolder.NoteItemLongClickListener itemLongClickListener) {
+        this.itemLongClickListener = itemLongClickListener;
     }
 
     @Override
@@ -112,6 +121,7 @@ public class NotesFragment extends Fragment implements View.OnClickListener {
 
     public void update(Note note) {
         noteAdapter.updateNote(note);
+        noteStorage.updateNote(note, null);
     }
 
 }

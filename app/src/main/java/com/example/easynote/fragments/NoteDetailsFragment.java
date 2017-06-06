@@ -2,9 +2,11 @@ package com.example.easynote.fragments;
 
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +32,7 @@ public class NoteDetailsFragment extends Fragment implements View.OnClickListene
     private TextView description;
     private View color;
     private View isImportant;
+    private TextView alarmDate;
     private TextView date;
     private View edit;
     private Note note;
@@ -66,10 +69,12 @@ public class NoteDetailsFragment extends Fragment implements View.OnClickListene
         isImportant = view.findViewById(R.id.noteDetailFragment_isImportant);
         date = (TextView) view.findViewById(R.id.noteDetailFragment_date);
         edit = view.findViewById(R.id.noteDetailFragment_edit);
+        alarmDate = (TextView) view.findViewById(R.id.noteDetailFragment_alarmDate);
 
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -77,20 +82,20 @@ public class NoteDetailsFragment extends Fragment implements View.OnClickListene
         setData();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setData() {
         title.setText(note.getTitle());
         description.setText(note.getDescription());
         color.setBackgroundColor(note.getColor());
         if(note.isImportant()) isImportant.setVisibility(View.VISIBLE);
         else isImportant.setVisibility(View.GONE);
-        date.setText(getDate(note.getCreateDate()));
+        date.setText(note.getCreateDate());
         edit.setOnClickListener(this);
-    }
-
-    private String getDate(Date date) {
-        Date now = new Date();
-        if(date.getDay() == now.getDay()) return String.format("%d:%d", date.getHours(), date.getMinutes());
-        return String.format("%s.%s.%s", date.getDay(), date.getMonth(), date.getYear());
+        if(note.getAlarmDate().getTimeInMillis() > System.currentTimeMillis()) {
+            alarmDate.setVisibility(View.VISIBLE);
+            alarmDate.setText("Alarm worked in " + note.getAlarmDateInString());
+        }
+        else alarmDate.setVisibility(View.GONE);
     }
 
     @Override
@@ -104,6 +109,7 @@ public class NoteDetailsFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if((requestCode == REQUEST_CODE) && (resultCode == getActivity().RESULT_OK)) {

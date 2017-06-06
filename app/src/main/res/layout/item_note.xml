@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
+    android:layout_height="140dp">
 
     <RelativeLayout
         android:id="@+id/note_item"
@@ -15,24 +15,23 @@
             android:background="@color/colorGreen"/>
         <TextView
             android:id="@+id/note_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/note_color"
-            android:layout_marginLeft="20dp"
+            style="@style/itemNote"
             android:textSize="25dp"
-            android:textColor="@color/colorBlack"
             android:text="Title"/>
         <TextView
             android:id="@+id/note_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/note_color"
+            style="@style/itemNote"
             android:layout_below="@+id/note_title"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:textSize="18dp"
-            android:textColor="@color/colorBlack"
             android:maxLines="2" />
+
+        <TextView
+            android:id="@+id/note_alarmDate"
+            style="@style/itemNote"
+            android:textSize="16dp"
+            android:layout_below="@+id/note_description"
+            android:layout_marginTop="20dp" />
 
         <TextView
             android:id="@+id/note_date"

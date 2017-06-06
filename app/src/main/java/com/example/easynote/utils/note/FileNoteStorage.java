@@ -1,5 +1,7 @@
 package com.example.easynote.utils.note;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.easynote.pojos.Note;
@@ -26,7 +28,7 @@ public class FileNoteStorage extends NoteStorage {
             notesWrapper = new NotesWrapper();
         }
 
-        Log.d("testt", "Yes0" + notesWrapper.toString());
+        Log.d("testt", "FileNoteStorage -- Yes0 -- " + notesWrapper.toString());
     }
 
     public static String getFileName() {
@@ -34,10 +36,11 @@ public class FileNoteStorage extends NoteStorage {
     }
 
 //    Create Note
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void createNote(Note note, NoteListener listener) {
         note.setId(System.currentTimeMillis());
-        note.setCreateDate(new Date());
+        note.changeUpdateDate();
         notesWrapper.getNotes().add(note);
 
         StorageHelper.serialize(getFileName(), notesWrapper);
@@ -56,9 +59,10 @@ public class FileNoteStorage extends NoteStorage {
     }
 
     //    Update Note
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void updateNote(final Note note, NoteListener noteListener) {
-        note.setCreateDate(new Date());
+        note.changeUpdateDate();
         int i = getNotePosition(note.getId());
         notesWrapper.getNotes().remove(i);
         notesWrapper.getNotes().add(i, note);
